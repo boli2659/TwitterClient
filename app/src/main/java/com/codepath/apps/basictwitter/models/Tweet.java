@@ -2,6 +2,8 @@ package com.codepath.apps.basictwitter.models;
 
 import android.text.format.DateUtils;
 
+import com.activeandroid.annotation.Table;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
