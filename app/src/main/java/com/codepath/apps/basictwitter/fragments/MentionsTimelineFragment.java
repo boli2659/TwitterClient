@@ -1,7 +1,6 @@
 package com.codepath.apps.basictwitter.fragments;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -25,7 +24,7 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
-public class HomeTimelineFragment extends TweetsListFragment {
+public class MentionsTimelineFragment extends TweetsListFragment {
 
     private TwitterClient client;
 
@@ -67,7 +66,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
     }
 
     private void populateTimeline(int number) {
-        client.getHomeTimeline(new JsonHttpResponseHandler(){
+        client.getMentionsTimeline(new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 ArrayList<Tweet> t = Tweet.fromJSONArray(response);
@@ -80,13 +79,4 @@ public class HomeTimelineFragment extends TweetsListFragment {
             }
         }, String.format("%d", number));
     }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == 2) {
-            populateTimeline(25);
-        }
-
-    }
-
 }

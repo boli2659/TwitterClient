@@ -35,11 +35,9 @@ public class TweetsListFragment extends Fragment {
 
     private ArrayList<Tweet> tweets;
     private TweetsArrayAdapter mAdapter;
-    private RecyclerView lvTweets;
-    private LinearLayoutManager layoutManager;
-    private TwitterClient client;
-    private SwipeRefreshLayout swipeContainer;
-
+    protected RecyclerView lvTweets;
+    protected LinearLayoutManager layoutManager;
+    protected SwipeRefreshLayout swipeContainer;
 
     @Nullable
     @Override
@@ -49,41 +47,14 @@ public class TweetsListFragment extends Fragment {
         lvTweets = (RecyclerView) v.findViewById(R.id.lvTweets);
         lvTweets.setAdapter(mAdapter);
         lvTweets.setLayoutManager(layoutManager);
-        lvTweets.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount) {
-                TimelineActivity tla = (TimelineActivity) getActivity();
-                populateTimeline(totalItemsCount + 25);
-            }
-        });
-        swipeContainer = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipeContainer);
-        // Setup refresh listener which triggers new data loading
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                populateTimeline(25);
-            }
-        });
-        // Configure the refreshing colors
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-        FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getContext(), ComposeTweetActivity.class);
-                startActivityForResult(i, 2);
-            }
-        });
+
+        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         return v;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        client = TwitterApplication.getRestClient();
 
         tweets = new ArrayList<>();
         mAdapter = new TweetsArrayAdapter(getActivity(), tweets);
@@ -91,33 +62,11 @@ public class TweetsListFragment extends Fragment {
 
     }
 
-    public void populateTimeline(int number) {
-        client.getHomeTimeline(new JsonHttpResponseHandler(){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                ArrayList<Tweet> t = Tweet.fromJSONArray(response);
-                addAll(t);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-
-            }
-        }, String.format("%d", number));
-    }
-
-    public void addAll(List<Tweet> tweets) {
+    public void addAll(List<Tweet> t) {
         tweets.clear();
-        tweets.addAll(tweets);
+        tweets.addAll(t);
         mAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == 2) {
-            populateTimeline(25);
-        }
-
-    }
 
 }
