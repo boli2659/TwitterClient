@@ -23,7 +23,11 @@ public class TweetDetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tweet_details);
-
+        name = (TextView) findViewById(R.id.tvProfileNameDetails) ;
+        body = (TextView) findViewById(R.id.tvBodyDetails) ;
+        time = (TextView) findViewById(R.id.tvTimeDetails) ;
+        avi = (ImageView) findViewById(R.id.ivProfileAviDetails);
+        reply = (Button) findViewById(R.id.btnReply);
         name.setText(getIntent().getStringExtra("name"));
         time.setText(Tweet.getRelativeTimeAgo(getIntent().getStringExtra("time")));
         body.setText(getIntent().getStringExtra("body"));

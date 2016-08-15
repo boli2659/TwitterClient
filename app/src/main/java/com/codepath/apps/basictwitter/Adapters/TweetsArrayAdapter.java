@@ -58,7 +58,7 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<TweetsArrayAdapter.
             if(view.equals(ivAvi)) {
                 Intent i = new Intent(mContext, ProfileActivity.class);
                 i.putExtra("screen_name", mTweets.get(getLayoutPosition()).getUser().getScreenName());
-                startActivityForResult(new ProfileActivity(), i, 4, null);
+                mContext.startActivity(i);
             } else {
                 int position = getLayoutPosition();
                 Tweet tweet = mTweets.get(position);
@@ -67,7 +67,7 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<TweetsArrayAdapter.
                 i.putExtra("body", tweet.getBody());
                 i.putExtra("time", tweet.getTimestamp());
                 i.putExtra("picUrl", tweet.getUser().getAviUrl());
-                startActivityForResult(new TweetDetailsActivity(), i, 4, null);
+                mContext.startActivity(i);
             }
         }
     }

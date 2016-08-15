@@ -28,14 +28,14 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         mTwitterClient = TwitterApplication.getRestClient();
-        String screenName = getIntent().getStringExtra("screen_name");
+        final String screenName = getIntent().getStringExtra("screen_name");
 
         mTwitterClient.getUserInfo(new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 user = User.fromJSON(response);
                 if (getSupportActionBar() != null && user != null && user.getScreenName() != null) {
-                    getSupportActionBar().setTitle(String.format("@" + user.getScreenName()));
+                    getSupportActionBar().setTitle(String.format("@" + screenName));
                 }
                 populateProfileHeader(user);
             }
