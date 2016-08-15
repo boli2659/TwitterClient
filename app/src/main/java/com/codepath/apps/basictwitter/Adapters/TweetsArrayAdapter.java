@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.codepath.apps.basictwitter.Activities.ProfileActivity;
 import com.codepath.apps.basictwitter.Activities.TimelineActivity;
 import com.codepath.apps.basictwitter.Activities.TweetDetailsActivity;
 import com.codepath.apps.basictwitter.R;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.support.v4.app.ActivityCompat.startActivity;
+import static android.support.v4.app.ActivityCompat.startActivityForResult;
 
 public class TweetsArrayAdapter extends RecyclerView.Adapter<TweetsArrayAdapter.ViewHolder>{
 
@@ -48,19 +50,25 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<TweetsArrayAdapter.
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             ivAvi = (ImageView) itemView.findViewById(R.id.ivProfilePicture);
             itemView.setOnClickListener(this);
-
+            ivAvi.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            int position = getLayoutPosition();
-            Tweet tweet = mTweets.get(position);
-            Intent i = new Intent(mContext, TweetDetailsActivity.class);
-            i.putExtra("name", tweet.getUser().getName());
-            i.putExtra("body", tweet.getBody());
-            i.putExtra("time", tweet.getTimestamp());
-            i.putExtra("picUrl", tweet.getUser().getAviUrl());
-            startActivity(new TweetDetailsActivity(), i, Bundle.EMPTY);
+            if(view.equals(ivAvi)) {
+                Intent i = new Intent(mContext, ProfileActivity.class);
+                i.putExtra("screen_name", mTweets.get(getLayoutPosition()).getUser().getScreenName());
+                startActivityForResult(new ProfileActivity(), i, 4, null);
+            } else {
+                int position = getLayoutPosition();
+                Tweet tweet = mTweets.get(position);
+                Intent i = new Intent(mContext, TweetDetailsActivity.class);
+                i.putExtra("name", tweet.getUser().getName());
+                i.putExtra("body", tweet.getBody());
+                i.putExtra("time", tweet.getTimestamp());
+                i.putExtra("picUrl", tweet.getUser().getAviUrl());
+                startActivityForResult(new TweetDetailsActivity(), i, 4, null);
+            }
         }
     }
     public TweetsArrayAdapter(Context context, List<Tweet> tweets) {
@@ -112,5 +120,6 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<TweetsArrayAdapter.
         mTweets.addAll(list);
         notifyDataSetChanged();
     }
+
 
 }

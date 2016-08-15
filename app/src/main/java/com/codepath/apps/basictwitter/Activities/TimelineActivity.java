@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ListView;
@@ -62,6 +64,17 @@ public class TimelineActivity extends AppCompatActivity {
         tabStrip.setViewPager(vpPager);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_timeline, menu);
+        return true;
+    }
+
+    public void onProfileView(MenuItem mi) {
+        Intent i = new Intent(this, ProfileActivity.class);
+        startActivity(i);
+    }
+
     public class TweetsPagerAdapter extends FragmentPagerAdapter {
         final int PAGE_COUNT = 2;
         private String[] tabTitles = { "Home", "Mentions" };
@@ -72,8 +85,7 @@ public class TimelineActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            boolean x = (position == 0);
-            if(x) {
+            if(position == 0) {
                 return new HomeTimelineFragment();
             }
             else if(position == 1) {
@@ -92,4 +104,5 @@ public class TimelineActivity extends AppCompatActivity {
             return tabTitles.length;
         }
     }
+
 }

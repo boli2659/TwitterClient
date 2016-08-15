@@ -66,6 +66,7 @@ public class TweetsListFragment extends Fragment {
         tweets.clear();
         tweets.addAll(t);
         mAdapter.notifyDataSetChanged();
+        //mAdapter.notify();
     }
 
 
